@@ -1,0 +1,11 @@
+name(){
+    "nick"
+}
+
+if ("nick" prefix name())
+    if( name() prefix "nick")
+        "nick"
+    else
+        "unknown"
+else
+    "unknown"

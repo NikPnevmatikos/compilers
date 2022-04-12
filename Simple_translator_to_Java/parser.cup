@@ -1,0 +1,126 @@
+/**
+ *  Package and Import Specifications
+ */
+import java_cup.runtime.*;
+
+/**
+ *  Usercode Components
+ */
+parser code {:
+    // Connect this parser to a scanner!
+    Scanner s;
+    Parser(Scanner s){ this.s=s; }
+:}
+
+/* define how to connect to the scanner! */
+scan with {: return s.next_token(); :};
+
+/**
+ *  Symbol Lists
+ */
+
+/* Terminals (tokens returned by the scanner). */
+terminal            PLUS, LBRACKET, RBRACKET, LPAREN, RPAREN, COMMA, IF, ELSE, PREFIX, REVERSE, IDENTIFIER;
+terminal String     STRING_LITERAL;        // our scanner provides numbers as strings
+
+/*  Non terminals */
+non terminal            program, functions, main,exp, callfunc,function,comand,comtype,args,args2, argtype, fcomand, funargs, ifstatment,
+                        funcall,callargs, funif, reverse, funreverse;
+
+/**
+ *  Precedence Declarations
+ */
+precedence left     IF;
+precedence left     PLUS;
+precedence left     REVERSE;
+
+/**
+ *  The Grammar Rules
+ */
+program ::= functions:func main:m                                                 {:System.out.println("class myprog{\n");
+                                                                                    System.out.println("\tpublic static void main(String[] argv){\n\n" + m + "\n\t}");
+                                                                                    System.out.println(func);
+                                                                                    System.out.println("}");:}
+         |main:m                                                                  {:System.out.println("class myprog{\n");
+                                                                                    System.out.println("\tpublic static void main(String[] argv){\n\n" + m + "\n\t}");
+                                                                                    System.out.println("}");:}   
+         |                                                                        {:System.out.println("class myprog{\n");
+                                                                                    System.out.println("\tpublic static void main(String[] argv){\n\n\n\t}");
+                                                                                    System.out.println("}");:}                    
+; 
+
+/*function declaration*/
+
+functions ::= functions:f1 function:f2                                            {:RESULT = f1 + "\n" + f2;:}
+            |function:f1                                                          {:RESULT = f1;:}                                                              
+;
+function ::= IDENTIFIER:name LPAREN RPAREN LBRACKET comand:c RBRACKET             {:RESULT = "\tpublic static String " + name + "(){\n\t\treturn " + c + ";\n\t}";:}
+           | IDENTIFIER:name LPAREN args:a RPAREN LBRACKET comand:c RBRACKET      {:RESULT = "\tpublic static String " + name + "(" + a + "){\n\t\treturn " + c + ";\n\t}";:}
+;
+args  ::= args:a COMMA IDENTIFIER:x                                               {: RESULT = a + ", String "+ x;:}
+        |IDENTIFIER:x                                                             {: RESULT = "String "+ x ;:}
+;
+comand ::= comand:x PLUS comtype:y                                                {:RESULT = x + " + " + y ;:} 
+         | comtype:x                                                              {:RESULT = x;:}
+;
+comtype ::= STRING_LITERAL:x                                                      {:RESULT = "\"" + x + "\""; :}   
+          | funif: f                                                              {:RESULT = f ;:}            
+          | IDENTIFIER:x                                                          {:RESULT = x ;:}
+          | funcall:f                                                             {:RESULT = f ;:}
+          | funreverse:r                                                          {: RESULT = r ;:}
+;
+
+
+/*function call inside function */
+funcall ::= IDENTIFIER:name LPAREN RPAREN                                         {:RESULT = name + "()";:}
+          | IDENTIFIER:name LPAREN callargs:a RPAREN                              {:RESULT = name + "("+ a + ")";:}
+;
+
+callargs  ::= callargs:a COMMA comand:c                                           {: RESULT = a + ", " + c ;:}
+            |comand:c                                                             {: RESULT = c ;:}
+;
+funreverse ::= REVERSE comand:c                                                   {: RESULT = "((new StringBuffer(" + c + ").reverse()).toString())" ;:}
+;
+/*if inside funtions*/
+funif ::= IF LPAREN comand:c1 PREFIX comand:c2 RPAREN 
+                comand:a 
+               ELSE 
+                comand:b                                                          {:RESULT = "(" + c2 + ".startsWith("+ c1 + ") ? "+ a + " : " + b + ")";:}
+;
+/*functions call from main*/
+
+
+main ::= main:f1 exp:e                                                            {:RESULT = f1 + "\t\tSystem.out.println(" + e + ");\n";:}                 
+       | exp:e2                                                                   {:RESULT = "\t\tSystem.out.println(" + e2 + ");\n";:}
+; 
+
+exp ::= exp:e PLUS argtype:t                                                      {:RESULT = "(" +  e + "+" + t + ")";:}
+      | argtype:t                                                                 {: RESULT = t ;:}
+;
+
+/*functions calls in main */
+fcomand ::= IDENTIFIER:name LPAREN RPAREN                                         {:RESULT = name + "()";:}
+          | IDENTIFIER:name LPAREN args2:a RPAREN                                 {:RESULT = name + "("+ a + ")";:}
+;
+
+args2  ::= args2:a COMMA funargs:fa                                               {: RESULT = a + ", " + fa ;:}
+         |funargs:fa                                                              {: RESULT = fa ;:}
+;
+funargs ::= funargs:fa PLUS argtype:t                                             {: RESULT = "(" + fa + "+" + t + ")";:}
+          | argtype:t                                                             {: RESULT = t ;:}
+;
+argtype ::= STRING_LITERAL:x                                                      {: RESULT = "\"" + x + "\"" ;:}
+          |fcomand:f                                                              {: RESULT = f ;:}
+          |ifstatment:f                                                           {: RESULT = f ;:}
+          |reverse:r                                                              {: RESULT = r ;:}
+;
+
+/* if statment in main */
+ifstatment ::= IF LPAREN funargs:a1 PREFIX funargs:a2 RPAREN 
+                funargs:a 
+               ELSE 
+                funargs:b                                                         {:RESULT = "(" + a2 + ".startsWith("+ a1 + ") ? "+ a + " : " + b + ")";:}
+;
+
+reverse ::= REVERSE funargs:fa                                                    {: RESULT = "((new StringBuffer(" + fa + ").reverse()).toString())" ;:}
+;
