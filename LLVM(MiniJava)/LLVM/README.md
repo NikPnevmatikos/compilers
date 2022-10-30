@@ -120,7 +120,7 @@ That is, your program must compile to LLVM IR all .java files given as arguments
 * Memory allocated with `@calloc` will leak since you're not implementing a Garbage Collector, but that's fine for this homework.
 * You will need to check each array access in order not to write or read beyond the limits of an array. If an illegal read/write is attempted, you will print the message "Out of bounds" and the program will exit (you may call the `@throw_oob` defined below for that). Of course, you need to know the length of an array for that.
 * You will also need to check if an array is allocated with a negative length, and do the same process as above in that case.
-* You may see some examples of LLVM code produced for different Java input files [here](./LLVM(MiniJava)/llvm_examples) (corresponding to the earlier MiniJava [examples](./Semantic_Check(MiniJava)/test_files/minijava) from HW2).
+* You may see some examples of LLVM code produced for different Java input files [here](./LLVM(MiniJava)/llvm-examples/dot_java) (corresponding to the earlier MiniJava [examples](./Semantic_Check(MiniJava)/test_files/minijava) from HW2).
 * You may define the following helper methods once in your output files, in order to be able to call `@calloc`, `@print_int` and `@throw_oob`.
 
 ```llvm
