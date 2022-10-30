@@ -1,22 +1,17 @@
-Όνομα: Νικόλαος 
-Επίθετο: Πνευματικός
-ΑΜ: 1115201900157
+## Simple_translator_Java:
 
-----------------------------------------------------------------------------------------------------------------------------------
-Όσο αναφορά την γραμματική είχα πολλά θέματα με shift reduce conflict τα οποία πολλά λυνόντουσαν αν έγραφα τον ίδιο γραμματικό κανόνα η σύνολο γραμματικών κανόνών με άλλα ονόματα. Επίσης έτσι όπως άρχισα να γράφω την γραμματική πολλοί κανόνες χρειαστηκαν να γραφτούν το ίδιο με την μόνη διαφορά ο ένας από τους δύο να είχε ως τερματικό και IDENTIFIER που είναι αποδεκτό από την γλώσα μόνο στις συναρτήσεις(όπως args,command, comtype για τις συναρτήσεις και arg2, funargs, argtype για την main).
-
-----------------------------------------------------------------------------------------------------------------------------------
-Για την εκτέλεση του προγράματος στο makefile ανάλογα για ποιο αρχείο θέλουμε να το εκτελέσουμε το προσθέτουμε στο execute η execute_save. Με την χρήση execute save ο παραγμένος κώδικας java γράφεται στο αρχείο myprog.java (αν δεν υπάρχει δημιουεγείται).
-Με την εντολή make run εκτελείται ο αντίστοιχος κώδικας java.
-
-το προγράματα προς εκτέλεση στο φάκελο inputs είναι τα παραδείγματα από την εκφώνηση  της εργασίας + ένα παράδειγμα απο το piazza + ενα παράδειγμα για να δείξω την λειτουργία της if και στη μειν (input.txt) + ένα άδειο αρχείο για να φανεί το παραγόμενο πρόγραμμα στην java που έχει άδεια main.
+compile: make\
+\
+Run: make execute (Change the input file in run command)\
+\
+Run and save the output to a new file: make execute_save
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-παρακάτω τα αποτελέσματα εκτέλεσης των προγραμμάτων στο φάκελο inputs:
+##### Examples:
 
 example1:
-
+```java
 class myprog{
 
 	public static void main(String[] argv){
@@ -36,15 +31,16 @@ class myprog{
 		return first_name + sep + last_name;
 	}
 }
-
-Αποτέλεσμα: 
-
-John
-Doe
-John Doe
+```
+Result: 
+\
+John\
+Doe\
+John Doe\
 
 ----------------------------------------------------------------------------------------------------------------------------------
 example2: 
+```java
 class myprog{
 
 	public static void main(String[] argv){
@@ -63,13 +59,14 @@ class myprog{
 		return ("yes".startsWith(c) ? (c.startsWith("yes") ? repeat(x) : x) : x);
 	}
 }
-
-Αποτέλεσμα: 
-JohnJohn
-Jane
+```
+Result: 
+JohnJohn\
+Jane\
 
 ----------------------------------------------------------------------------------------------------------------------------------
 example3:
+```java
 class myprog{
 
 	public static void main(String[] argv){
@@ -83,15 +80,15 @@ class myprog{
 		return (langName.startsWith("Java") ? ("Java".startsWith(langName) ? "Static" : (((new StringBuffer(langName).reverse()).toString()).startsWith(((new StringBuffer("script").reverse()).toString())) ? "Dynamic" : "Unknown")) : (((new StringBuffer(langName).reverse()).toString()).startsWith(((new StringBuffer("script").reverse()).toString())) ? "Probably Dynamic" : "Unknown"));
 	}
 }
-
-Αποτέλεσμα:
-Static
-Dynamic
-Probably Dynamic
+```
+Result:
+Static\
+Dynamic\
+Probably Dynamic\
 
 ----------------------------------------------------------------------------------------------------------------------------------
 input:
-
+```java
 class myprog{
 
 	public static void main(String[] argv){
@@ -103,13 +100,13 @@ class myprog{
 		return "nick";
 	}
 }
-
-Αποτέλεσμα:
+```
+Result:
 nick
 
 ----------------------------------------------------------------------------------------------------------------------------------
 piazzaexample: 
-
+```java
 class myprog{
 
 	public static void main(String[] argv){
@@ -121,17 +118,16 @@ class myprog{
 
 	}
 }
-
-
-Αποτέλεσμα: 
-yes correct
-yes incorrect input
-yes correct input
-sey tcerroc input
+```
+Result: 
+yes correct\
+yes incorrect input\
+yes correct input\
+sey tcerroc input\
 
 ----------------------------------------------------------------------------------------------------------------------------------
 blankfile:
-
+```java
 class myprog{
 
 	public static void main(String[] argv){
@@ -139,8 +135,8 @@ class myprog{
 
 	}
 }
-
-Αποτέλεσμα: 
+```
+Result: 
 
 
 
